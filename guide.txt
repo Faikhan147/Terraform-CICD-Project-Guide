@@ -1,0 +1,110 @@
+Step 1.  S3 (backend) repo — setup & apply
+
+git clone https://github.com/Faikhan147/Terraform-S3
+cd  Terraform-S3
+chmod 777 apply.sh destroy.sh setup.sh
+./setup.sh
+./apply.sh
+
+
+Step 2. Get region-specific EKS node AMI id and update on Repo Terraform-EKS varaibles in every environment
+
+aws ssm get-parameter --name "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id" --region ap-southeast-2 --query "Parameter.Value" --output text
+
+
+Step 3. Get region-specific AMI id and update on Repo Terraform-Jenkins and Terraform-SonarQube varaibles
+
+aws ec2 describe-images --owners 992862946505 --filters "Name=name,Values=ubuntu/images/hvm-ssd/ubuntu-noble-24.04-amd64-server-*" "Name=state,Values=available" --query "Images | sort_by(@, &CreationDate)[-1].ImageId" --region ap-southeast-2 --output text
+
+
+Step 4. VPC repo — apply abnd update the subnets in Repos Terraform-EKS, Terraform-Jenkins, Terraform-SonarQube and VPC id in Repos Terraform-EKS-Values, Terraform-Jenkins-SonarQube-Values
+
+git clone https://github.com/Faikhan147/Terraform-VPC
+cd Terraform-VPC
+chmod 777 apply.sh destroy.sh
+./apply.sh
+
+
+Step 5. Apply Terraform-EKS-Values and update the IAM Roles ARNs, KMS Keys ARNs, Security Group ID in Repo Terraform-EKS
+
+git clone https://github.com/Faikhan147/Terraform-EKS-Values
+cd Terraform-EKS-Values
+chmod 777 apply.sh destroy.sh
+./apply.sh
+
+
+Step 6. EKS cluster creation (prod/staging/qa) — "this 3 can be apply at the same time
+
+git clone https://github.com/Faikhan147/Terraform-EKS
+cd Terraform-EKS
+chmod 777 apply-prod.sh destroy-prod.sh
+./apply-prod.sh
+
+cd Terraform-EKS
+chmod 777 apply-staging.sh destroy-staging.sh
+./apply-staging.sh
+
+cd Terraform-EKS
+chmod 777 apply-qa.sh destroy-qa.sh
+./apply-qa.sh
+
+Step 7. Jenkins & SonarQube values - apply and update the IAM Roles ARNs, KMS Keys ARNs, Security Group ID in Repos Terraform-Jenkins, Terraform-SonarQube
+
+git clone https://github.com/Faikhan147/Terraform-Jenkins-SonarQube-Values
+cd Terraform-Jenkins-SonarQube-Values
+chmod 777 apply.sh destroy.sh
+./apply.sh
+
+
+Step 8. Prepare Jenkins credentials files (local edit BEFORE uploading in s3)
+
+git clone https://github.com/Faikhan147/Terraform-CICD-Project-Files-And-Folders
+
+1. Update AWS Credentials from file: Jenkins-Credentials/aws-credentials
+2. Update GitHub Token from file: Jenkins-Credentials/github-credentials.yaml
+   Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) -> Click Generate new token (classic) -> Scopes: repo -> Copy the token.
+3. Update Slack Token from file: Jenkins-Credentials/slack-credentials.yaml
+  Open Slack website:https://api.slack.com/apps -> Click Create New App → From Scratch -> Give your app a name (e.g., JenkinsAlerts) and select your workspace -> In the left menu, go to Incoming Webhooks → Turn ON -> Click Add New Webhook to Workspace → choose a channel → Allow ->Copy the generated Webhook URL
+
+OR
+
+If you already opened the Slack link:https://api.slack.com/apps -> Apni app select karo (jo pehle se bani hui hai) -> Left side me “Incoming Webhooks” option par jao -> Incoming Webhooks → ON karo -> Click “Add New Webhook to Workspace” -> Channel choose karo jahan notifications chahiye → Allow.
+
+
+Step 9. Deploy SonarQube Machine
+
+git clone https://github.com/Faikhan147/Terraform-SonarQube
+cd Terraform-SonarQube
+chmod 777 apply.sh destroy.sh
+./apply.sh
+
+
+Step 10. Prepare Jenkins credentials files (local edit BEFORE uploading in s3)
+
+1. Update the SonarQube Global-Token form  file: Jenkins-Credentials/sonar-global-token-credentials.yaml
+   SonarQube → top-right profile → My Account → Security → Generate Tokens → copy token
+2. Update the SonarQube Machine Public IP Address from file: Jenkins-System/sonar-authentication.yaml
+3. Upload required files to S3 Bucket: terraform-backend-all-envs
+
+Step 11. Deploy Jenkins Machine
+
+git clone https://github.com/Faikhan147/Terraform-Jenkins
+cd Terraform-Jenkins
+chmod 777 apply.sh destroy.sh
+./apply.sh
+
+
+Step 12. Restart Jenkins and update the Load Balancer URL in Jenkins Credentials after each Pipeline fail once in Monitoring Stage
+
+sudo systemctl restart jenkins
+
+Step 13. kubeconfig & verify nodes
+
+aws eks update-kubeconfig --name prod-eks-cluster --region ap-southeast-2
+kubectl get nodes
+
+aws eks update-kubeconfig --name staging-eks-cluster --region ap-southeast-2
+kubectl get nodes
+
+aws eks update-kubeconfig --name qa-eks-cluster --region ap-southeast-2
+kubectl get nodes
