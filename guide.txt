@@ -56,7 +56,7 @@ chmod 777 apply.sh destroy.sh
 ./apply.sh
 
 
-Step 8. Prepare Jenkins credentials files (local edit BEFORE uploading in s3)
+Step 8. Prepare Jenkins credentials files (locally edit BEFORE uploading in s3)
 
 git clone https://github.com/Faikhan147/Terraform-CICD-Project-Files-And-Folders
 
