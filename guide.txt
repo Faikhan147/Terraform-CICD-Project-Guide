@@ -108,3 +108,39 @@ kubectl get nodes
 
 aws eks update-kubeconfig --name qa-eks-cluster --region ap-southeast-2
 kubectl get nodes
+
+
+Step 13. Final: Destroy everything (recommended order)
+
+cd Terraform-Jenkins
+./destroy.sh
+
+
+cd Terraform-SonarQube
+./destroy.sh
+
+
+cd Terraform-Jenkins-SonarQube-Values
+./destroy.sh
+
+
+cd Terraform-EKS
+./destroy-prod.sh
+
+cd Terraform-EKS
+./destroy-staging.sh
+
+cd Terraform-EKS
+./destroy-qa.sh
+
+
+cd Terraform-EKS-Values
+./destroy.sh
+
+
+cd Terraform-VPC
+./destroy.sh
+
+
+cd  Terraform-S3
+./destroy.sh
