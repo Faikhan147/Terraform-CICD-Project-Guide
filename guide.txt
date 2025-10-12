@@ -14,7 +14,8 @@ aws ssm get-parameter --name "/aws/service/eks/optimized-ami/1.31/amazon-linux-2
 
 Step 3. Get region-specific AMI id and update on Repo Terraform-Jenkins and Terraform-SonarQube varaibles
 
-aws ec2 describe-images --owners 992862946505 --filters "Name=name,Values=ubuntu/images/hvm-ssd/ubuntu-noble-24.04-amd64-server-*" "Name=state,Values=available" --query "Images | sort_by(@, &CreationDate)[-1].ImageId" --region ap-southeast-2 --output text
+aws ec2 describe-images --owners 099720109477 --filters "Name=name,Values=ubuntu/images/hvm-ssd/ubuntu-*-amd64-server-*" "Name=state,Values=available" --query "Images | sort_by(@, &CreationDate)[-1].ImageId" --region ap-southeast-2 --output text
+
 
 
 Step 4. VPC repo — apply abnd update the subnets in Repos Terraform-EKS, Terraform-Jenkins, Terraform-SonarQube and VPC id in Repos Terraform-EKS-Values, Terraform-Jenkins-SonarQube-Values
