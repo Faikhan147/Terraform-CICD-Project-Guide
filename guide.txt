@@ -17,7 +17,7 @@ Step 3. Get region-specific AMI id and update on Repo Terraform-Jenkins and Terr
 Extract latest Ubuntu ami id manually best practice according to the region
 
 
-Step 4. VPC repo — apply abnd update the subnets in Repos Terraform-EKS, Terraform-Jenkins, Terraform-SonarQube and VPC id in Repos Terraform-EKS-Values, Terraform-Jenkins-SonarQube-Values
+Step 4. VPC repo — apply and update the subnets in Repos Terraform-EKS, Terraform-Jenkins, Terraform-SonarQube and VPC id and AWS Account ID in Repos Terraform-EKS-Values , Terraform-Jenkins-SonarQube-Values
 
 git clone https://github.com/Faikhan147/Terraform-VPC
 cd Terraform-VPC
