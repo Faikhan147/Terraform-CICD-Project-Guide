@@ -4,6 +4,9 @@ git clone https://github.com/Faikhan147/Terraform-S3
 cd  Terraform-S3
 chmod 777 apply.sh destroy.sh setup.sh
 ./setup.sh
+
+aws configure
+
 ./apply.sh
 
 
