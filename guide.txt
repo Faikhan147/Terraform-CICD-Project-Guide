@@ -106,7 +106,7 @@ Step 10. Prepare Jenkins credentials files (local edit before uploading in s3)
 1. Update the SonarQube Global-Token form  file: Jenkins-Credentials/sonar-global-token-credentials.yaml
    SonarQube → top-right profile → My Account → Security → Generate Tokens → Type(Global Analysis Token) → copy token
 2. Update the SonarQube Machine Public IP Address from file: Jenkins-System/sonar-authentication.yaml
-3. Upload required files to S3 Bucket: terraform-backend-all-envs
+3. Upload required files to S3 Bucket: terraform-backend-all-environments
 
 
 
