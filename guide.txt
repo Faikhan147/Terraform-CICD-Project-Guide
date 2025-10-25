@@ -14,7 +14,7 @@ aws configure
 
 Step 2. Get region-specific EKS node AMI id and update on Repo Terraform-EKS varaibles in every environment
 
-aws ssm get-parameter --name "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id" --region ap-southeast-1 --query "Parameter.Value" --output text
+aws ssm get-parameter --name "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id" --region ap-southeast-2 --query "Parameter.Value" --output text
 
 
 
@@ -130,15 +130,15 @@ sudo systemctl restart jenkins
 
 Step 13. kubeconfig & verify nodes
 
-aws eks update-kubeconfig --name prod-eks-cluster --region ap-southeast-1
+aws eks update-kubeconfig --name prod-eks-cluster --region ap-southeast-2
 kubectl get nodes
 kubectl get pods -n prod
 
-aws eks update-kubeconfig --name staging-eks-cluster --region ap-southeast-1
+aws eks update-kubeconfig --name staging-eks-cluster --region ap-southeast-2
 kubectl get nodes
 kubectl get pods -n staging
 
-aws eks update-kubeconfig --name qa-eks-cluster --region ap-southeast-1
+aws eks update-kubeconfig --name qa-eks-cluster --region ap-southeast-2
 kubectl get nodes
 kubectl get pods -n qa
 
