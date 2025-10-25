@@ -121,7 +121,7 @@ chmod 777 apply.sh destroy.sh
 
 
 
-Step 12. Update the SonarQube Public IP address in each Pipeline Jenkins file before run and restart Jenkins and update the Load Balancer URL in Jenkins Credentials after each Pipeline fail once in Monitoring Stage
+Step 12. Update the SonarQube public IP address in each Jenkins pipeline file before running the pipeline, and restart Jenkins. After each pipeline fails in the monitoring stage, update the Load Balancer URL in Jenkins credentials.
 
 sudo systemctl restart jenkins
 
