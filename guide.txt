@@ -10,14 +10,20 @@ aws configure
 ./apply.sh
 
 
+
+
 Step 2. Get region-specific EKS node AMI id and update on Repo Terraform-EKS varaibles in every environment
 
 aws ssm get-parameter --name "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id" --region ap-southeast-2 --query "Parameter.Value" --output text
 
 
+
+
 Step 3. Get region-specific AMI id and update on Repo Terraform-Jenkins and Terraform-SonarQube varaibles
 
 Extract latest Ubuntu ami id manually best practice according to the region
+
+
 
 
 Step 4. VPC repo — apply and update the subnets in Repos Terraform-EKS, Terraform-Jenkins, Terraform-SonarQube and VPC id and AWS Account ID in KMS module Repos Terraform-EKS-Values, Terraform-Jenkins-SonarQube-Values
@@ -28,12 +34,16 @@ chmod 777 apply.sh destroy.sh
 ./apply.sh
 
 
+
+
 Step 5. Apply Terraform-EKS-Values and update the IAM Roles ARNs, KMS Keys ARNs, Security Group ID in Repo Terraform-EKS
 
 git clone https://github.com/Faikhan147/Terraform-EKS-Values
 cd Terraform-EKS-Values
 chmod 777 apply.sh destroy.sh
 ./apply.sh
+
+
 
 
 Step 6. EKS cluster creation (prod/staging/qa) — "this 3 can be apply at the same time
@@ -51,12 +61,17 @@ cd Terraform-EKS
 chmod 777 apply-qa.sh destroy-qa.sh
 ./apply-qa.sh
 
+
+
+
 Step 7. Jenkins & SonarQube values - apply and update the IAM Roles ARNs, KMS Keys ARNs, Security Group ID in Repos Terraform-Jenkins, Terraform-SonarQube
 
 git clone https://github.com/Faikhan147/Terraform-Jenkins-SonarQube-Values
 cd Terraform-Jenkins-SonarQube-Values
 chmod 777 apply.sh destroy.sh
 ./apply.sh
+
+
 
 
 Step 8. Prepare Jenkins credentials files (locally edit BEFORE uploading in s3)
@@ -74,12 +89,16 @@ OR
 If you already opened the Slack link:https://api.slack.com/apps -> Apni app select karo (jo pehle se bani hui hai) -> Left side me “Incoming Webhooks” option par jao -> Incoming Webhooks → ON karo -> Click “Add New Webhook to Workspace” -> Channel choose karo jahan notifications chahiye → Allow.
 
 
+
+
 Step 9. Deploy SonarQube Machine
 
 git clone https://github.com/Faikhan147/Terraform-SonarQube
 cd Terraform-SonarQube
 chmod 777 apply.sh destroy.sh
 ./apply.sh
+
+
 
 
 Step 10. Prepare Jenkins credentials files (local edit BEFORE uploading in s3)
@@ -89,6 +108,9 @@ Step 10. Prepare Jenkins credentials files (local edit BEFORE uploading in s3)
 2. Update the SonarQube Machine Public IP Address from file: Jenkins-System/sonar-authentication.yaml
 3. Upload required files to S3 Bucket: terraform-backend-all-envs
 
+
+
+
 Step 11. Deploy Jenkins Machine
 
 git clone https://github.com/Faikhan147/Terraform-Jenkins
@@ -97,23 +119,33 @@ chmod 777 apply.sh destroy.sh
 ./apply.sh
 
 
+
+
 Step 12. Restart Jenkins and update the Load Balancer URL in Jenkins Credentials after each Pipeline fail once in Monitoring Stage
 
 sudo systemctl restart jenkins
+
+
+
 
 Step 13. kubeconfig & verify nodes
 
 aws eks update-kubeconfig --name prod-eks-cluster --region ap-southeast-2
 kubectl get nodes
+kubectl get pods -n prod
 
 aws eks update-kubeconfig --name staging-eks-cluster --region ap-southeast-2
 kubectl get nodes
+kubectl get pods -n staging
 
 aws eks update-kubeconfig --name qa-eks-cluster --region ap-southeast-2
 kubectl get nodes
+kubectl get pods -n qa
 
 
-Step 13. Final: Destroy everything (recommended order)
+
+
+Step 14. Final: Destroy everything (recommended order)
 
 cd Terraform-Jenkins
 ./destroy.sh
