@@ -172,10 +172,10 @@ cd Terraform-EKS
 cd Terraform-EKS-Values
 ./destroy.sh
 
+Delete All Load Balancers
 
 cd Terraform-VPC
 ./destroy.sh
-
 
 cd  Terraform-S3
 ./destroy.sh
