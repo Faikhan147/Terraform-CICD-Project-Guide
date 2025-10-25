@@ -172,7 +172,7 @@ cd Terraform-EKS
 cd Terraform-EKS-Values
 ./destroy.sh
 
-Delete All Load Balancers
+Delete All Load Balancers And k8s-elb Security Groups
 
 cd Terraform-VPC
 ./destroy.sh
