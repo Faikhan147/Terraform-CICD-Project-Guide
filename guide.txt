@@ -101,7 +101,7 @@ chmod 777 apply.sh destroy.sh
 
 
 
-Step 10. Prepare Jenkins credentials files (local edit BEFORE uploading in s3)
+Step 10. Prepare Jenkins credentials files (local edit before uploading in s3)
 
 1. Update the SonarQube Global-Token form  file: Jenkins-Credentials/sonar-global-token-credentials.yaml
    SonarQube → top-right profile → My Account → Security → Generate Tokens → Type(Global Analysis Token) → copy token
